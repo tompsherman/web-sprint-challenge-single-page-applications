@@ -1,4 +1,7 @@
 import React, {useState, useEffect} from "react"
+import PizzaOrder from "./PizzaOrder"
+import * as yup from "yup"
+import schema from "./formSchema"
 
 const initialFormValues = {
     name: "",
@@ -8,76 +11,62 @@ const initialFormValues = {
     instructions: "",
 }
 
+const initialFormErrors = {
+    name: ""
+}
+
 function Form() {
     const [pizza, setPizza] = useState([])
     const [formValues, setFormValues] = useState(initialFormValues)
+    const [formErrors, setFormErrors] = useState(initialFormErrors)
     
-    const onChange = event => {
-        const {name, value} = event.target
+
+    const validate = (name, value) => {
+        yup
+        .reach(schema, name)
+        .validate(value)
+        .then((valid)=>{
+            setFormErrors({
+                ...formErrors, [name]: "",
+            })
+        })
+        .catch((err)=>{
+            setFormErrors({
+                ...formErrors, [name]: err.errors[0]
+            })
+        })
+    }
+
+    const inputChange = (name, value) => {
+        validate(name,value);
         setFormValues({...formValues, [name]: value})
     }
 
-    const onSubmit = event => {
+    const formSubmit = event => {
         const newPizza = {
             name: formValues.name.trim(),
             size: formValues.size,
-            pepperoni: formValues.pepperoni,
-            mushrooms: formValues.mushrooms,
+            toppings: ['pepperoni', 'mushrooms'].filter(top => formValues[top]),
             instructions: formValues.instructions.trim()
         }
         setPizza([...pizza, newPizza])
-        event.preventDefault()
         setFormValues(initialFormValues)
     }
 
     return (
        <>
             <h1>Order Page</h1>
-            <form onSubmit={onSubmit}>
-                <input 
-                name="name" 
-                type="text" 
-                value={formValues.name} 
-                onChange={onChange} 
-                placeholder="enter name"/>
-                <br></br>
-                <select 
-                name="size" 
-                value={formValues.size} 
-                onChange={onChange} >
-                    <option>---select option---</option>
-                    <option>small</option>
-                    <option>large</option>
-                </select>
-                <br></br>
-                <p>choose toppings:</p>
-                <label>pepperoni
-                    <input 
-                    type="checkbox"
-                    name="pepperoni"
-                    checked={formValues.pepperoni}
-                    onChange={onChange}
-                    />
-                </label>
-                <label>mushrooms
-                    <input 
-                    type="checkbox"
-                    name="mushrooms"
-                    checked={formValues.mushrooms}
-                    onChange={onChange}
-                    />
-                </label>
-                <br></br>
-                <br></br>
-                <input 
-                name="instructions" 
-                type="text" 
-                value={formValues.instructions} 
-                onChange={onChange} 
-                placeholder="enter special instructions"/>                
-                <br></br>
-                <button>place order</button>
-            </form>
+            <PizzaOrder 
+            values = {formValues}
+            change = {inputChange}
+            submit = {formSubmit}
+            errors = {formErrors}
+            />
+            {pizza.map(pizza=>{
+                return(
+                    `${pizza.name} ordered a ${pizza.size} ${pizza.toppings} pizza. we will be sure to ${pizza.instructions}`
+                )
+            })}
        </>
     )
 }
