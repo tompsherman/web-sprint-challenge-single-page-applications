@@ -5,5 +5,7 @@ export default yup.object().shape({
     size: yup.string().notRequired(),
     pepperoni: yup.string().notRequired(),
     mushrooms: yup.string().notRequired(),
+    onions: yup.string().notRequired(),
+    anchovies: yup.string().notRequired(),
     instructions: yup.string().notRequired(),
 })

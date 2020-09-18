@@ -8,6 +8,8 @@ const initialFormValues = {
     size: "",
     pepperoni: false,
     mushrooms: false,
+    onions: false,
+    anchovies: false,
     instructions: "",
 }
 
@@ -46,7 +48,7 @@ function Form() {
         const newPizza = {
             name: formValues.name.trim(),
             size: formValues.size,
-            toppings: ['pepperoni', 'mushrooms'].filter(top => formValues[top]),
+            toppings: ['pepperoni', 'mushrooms', 'onions', 'anchovies'].filter(top => formValues[top]),
             instructions: formValues.instructions.trim()
         }
         setPizza([...pizza, newPizza])
@@ -64,7 +66,7 @@ function Form() {
             />
             {pizza.map(pizza=>{
                 return(
-                    `${pizza.name} ordered a ${pizza.size} ${pizza.toppings} pizza. we will be sure to ${pizza.instructions}`
+                    `${pizza.name} ordered a ${pizza.size} ${pizza.toppings} pizza. we will be sure to ${pizza.instructions}. `
                 )
             })}
        </>

@@ -50,11 +50,30 @@ return (
                         onChange={onChange}
                         />
                     </label>
+                    <br></br>
+                    <label>anchovies
+                        <input 
+                        type="checkbox"
+                        name="anchovies"
+                        checked={values.anchovies}
+                        onChange={onChange}
+                        />
+                    </label>
+                    <br></br>
                     <label>mushrooms
                         <input 
                         type="checkbox"
                         name="mushrooms"
                         checked={values.mushrooms}
+                        onChange={onChange}
+                        />
+                    </label>
+                    <br></br>
+                    <label>onions
+                        <input 
+                        type="checkbox"
+                        name="onions"
+                        checked={values.onions}
                         onChange={onChange}
                         />
                     </label>
