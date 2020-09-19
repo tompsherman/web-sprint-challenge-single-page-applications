@@ -8,8 +8,8 @@ const App = () => {
       <div className="header">
         <h1>Lambda Eats</h1>
         <p>You can remove this code and create your own header</p>
-        <Link to="/"><button>home</button></Link>
-        <Link to="/pizza"><button>order</button></Link>
+        <Link to="/"><button className="home">home</button></Link>
+        <Link to="/pizza"><button className="order">order</button></Link>
       </div>
     
 

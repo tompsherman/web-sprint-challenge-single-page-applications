@@ -19,19 +19,22 @@ const initialFormErrors = {
 }
 
 function Form() {
-    const [pizza, setPizza] = useState([])
+    const [pizza, setPizza] = useState()
     const [formValues, setFormValues] = useState(initialFormValues)
     const [formErrors, setFormErrors] = useState(initialFormErrors)
     const [post, setPost] = useState(false)
 
     useEffect(()=>{
         axios
-        .get("https://reqres.in/pizza")
-        .then((res)=> setPizza(res.data), setPost(false))
+        .get("https://reqres.in/api/pizza")
+        .then((response)=> 
+        // console.log(response.data.data),
+        setPizza(response.data.data), setPost(false),
+        console.log("pizza get:", pizza))
         .catch(err=>console.log("ERROR in GET"));
 
     }, [post])
-    console.log("axios get:", post, pizza)
+    console.log("pizza database:", post, pizza)
     
 
     const validate = (name, value) => {
@@ -63,10 +66,11 @@ function Form() {
             instructions: formValues.instructions.trim()
         }
         axios
-        .post("https://reqres.in/pizza", newPizza)
+        .post("https://reqres.in/api/pizza", newPizza)
         .then(res=>{
             setPost(true)
-            console.log("post:", post, pizza)
+            console.log("post:", newPizza)
+            debugger
         })
         .catch(err=> console.log("error IN POST"))
         .finally()
